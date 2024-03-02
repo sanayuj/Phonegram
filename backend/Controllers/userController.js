@@ -2,10 +2,10 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 const userSchema = require("../Models/userModel");
 const jwt = require("jsonwebtoken");
-const maxAge = "3d";
+const maxAge = 3 * 24 * 60 * 60;
 
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SCERET_KEY, { expireIn: maxAge });
+  return jwt.sign({ id }, process.env.JWT_SCERET_KEY, { expiresIn: maxAge });
 };
 
 module.exports.register = async (req, res, next) => {
@@ -36,20 +36,29 @@ module.exports.register = async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     newUser.password = await bcrypt.hash(newUser.password, salt);
     await newUser.save();
-    return res.json({status:true,message:"User registered successfully"})
+    return res.json({ status: true, message: "User registered successfully" });
   } catch (err) {
     console.log(err);
   }
 };
 
+module.exports.login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const userExist = await userSchema.findOne({ email });
 
-module.exports.login=async(req,res,next)=>{
-    try{
-        const {email,password}=req.body
-        const userExist=await userSchema.findOne({email})
-        
-
-    }catch(err){
-        console.log(err);
+    if (userExist) {
+      const matchPassword = await bcrypt.compare(password, userExist.password);
+      if (matchPassword) {
+        let token = createToken(userExist._id);
+        return res.json({ status: true, token, message: "Login success" });
+      } else {
+        return res.json({ status: false, message: "Incorrect password" });
+      }
+    } else {
+      return res.json({ status: false, message: "Account not found" });
     }
-}
+  } catch (err) {
+    console.log(err);
+  }
+};
