@@ -62,3 +62,20 @@ module.exports.login = async (req, res, next) => {
     console.log(err);
   }
 };
+
+
+module.exports.fetchUser=async(req,res,next)=>{
+  try {
+    const userId=req.params.userId
+    console.log(userId,"$$$$");
+    const user=await userSchema.findById(userId)
+    if(user){
+      return res.json({status:true,user})
+    }else{
+      return res.json({status:false})
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+}
