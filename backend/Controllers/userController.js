@@ -79,3 +79,16 @@ module.exports.fetchUser=async(req,res,next)=>{
     console.log(error);
   }
 }
+
+module.exports.getUsers=async(req,res,next)=>{
+  try {
+    const user=await userSchema.find({})
+    if(user){
+      return res.json({status:true,user})
+    }else{
+      return res.json({status:false})
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
