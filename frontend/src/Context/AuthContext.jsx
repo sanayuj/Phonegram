@@ -4,6 +4,8 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [registerError,setRegisterError]=useState(null)
+    const [isRegisterLoading,setIsRegisterLoading]=useState(false)
     const [registerInfo,setRegisterInfo]=useState({
         name:"",
         email:"",
