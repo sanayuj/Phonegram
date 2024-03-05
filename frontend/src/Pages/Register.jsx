@@ -2,6 +2,7 @@ import React from "react";
 import { Alert, Button, Form, Row, Col, Stack } from "react-bootstrap";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
+import { toast } from "react-toastify";
 
 function Register() {
   // const {user}=useContext(AuthContext)

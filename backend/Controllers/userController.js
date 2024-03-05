@@ -35,8 +35,10 @@ module.exports.register = async (req, res, next) => {
 
     const salt = await bcrypt.genSalt(10);
     newUser.password = await bcrypt.hash(newUser.password, salt);
-    await newUser.save();
-    return res.json({ status: true, message: "User registered successfully" });
+    let user=await newUser.save();
+    let token = createToken(user._id);
+    let id=user._id
+    return res.json({name,email,token,id, status: true, message: "User registered successfully" });
   } catch (err) {
     console.log(err);
   }
@@ -67,7 +69,6 @@ module.exports.login = async (req, res, next) => {
 module.exports.fetchUser=async(req,res,next)=>{
   try {
     const userId=req.params.userId
-    console.log(userId,"$$$$");
     const user=await userSchema.findById(userId)
     if(user){
       return res.json({status:true,user})
