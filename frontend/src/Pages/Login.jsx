@@ -21,7 +21,7 @@ function Login() {
             <Form.Control type="email" placeholder="Email" onChange={(e)=>{updateLoginInfo({...loginInfo,email:e.target.value})}}/>
             <Form.Control type="password" placeholder="Password" onChange={(e)=>{updateLoginInfo({...loginInfo,password:e.target.value})}} />
             <Button variant="primary" type="submit">
-              Login
+            {isLoginLoading?"Loading":"Login"} 
             </Button>
             <p className="link-light text-decoration-none ">
               {" "}

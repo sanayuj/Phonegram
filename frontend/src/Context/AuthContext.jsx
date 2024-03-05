@@ -73,7 +73,7 @@ export const AuthContextProvider = ({ children }) => {
   const logoutUser = useCallback(() => {
     localStorage.removeItem("User");
     setUser(null);
-  }, []);
+  }, [user]);
   return (
     <AuthContext.Provider
       value={{
