@@ -1,21 +1,31 @@
-const express=require("express")
-const app=express()
-const cors=require("cors")
-const dbConnection=require("./Config/dbConfig")
-const userRouter=require("./Routes/userRoutes")
-require("dotenv").config()
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const dbConnection = require("./Config/dbConfig");
+const userRouter = require("./Routes/userRoutes");
 
+//Dot ENV Config
 
-dbConnection.dbConnection()
+require("dotenv").config();
 
-app.use(express.json())
-app.use(cors())
+// Database Config
 
+dbConnection.dbConnection();
 
-app.use("/",userRouter)
+//JSON format Config
 
+app.use(express.json());
 
+//Cross origin resource sharing Config
 
-app.listen(process.env.PORT,()=>{
-    console.log(`Server is running on ${process.env.PORT}`);
-})
+app.use(cors());
+
+//Route Config
+
+app.use("/", userRouter);
+
+//Server Config
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on ${process.env.PORT}`);
+});

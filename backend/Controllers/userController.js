@@ -35,10 +35,17 @@ module.exports.register = async (req, res, next) => {
 
     const salt = await bcrypt.genSalt(10);
     newUser.password = await bcrypt.hash(newUser.password, salt);
-    let user=await newUser.save();
+    let user = await newUser.save();
     let token = createToken(user._id);
-    let id=user._id
-    return res.json({name,email,token,id, status: true, message: "User registered successfully" });
+    let id = user._id;
+    return res.json({
+      name,
+      email,
+      token,
+      id,
+      status: true,
+      message: "User registered successfully",
+    });
   } catch (err) {
     console.log(err);
   }
@@ -47,15 +54,25 @@ module.exports.register = async (req, res, next) => {
 module.exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res.json({ status: false, message: "All fields required" });
+    }
     const userExist = await userSchema.findOne({ email });
 
     if (userExist) {
       const matchPassword = await bcrypt.compare(password, userExist.password);
       if (matchPassword) {
         let token = createToken(userExist._id);
-        let Id=userExist._id
-        let name=userExist.name
-        return res.json({ status: true, token,Id,email,name,message: "Login success" });
+        let Id = userExist._id;
+        let name = userExist.name;
+        return res.json({
+          status: true,
+          token,
+          Id,
+          email,
+          name,
+          message: "Login success",
+        });
       } else {
         return res.json({ status: false, message: "Incorrect password" });
       }
@@ -67,31 +84,29 @@ module.exports.login = async (req, res, next) => {
   }
 };
 
-
-module.exports.fetchUser=async(req,res,next)=>{
+module.exports.fetchUser = async (req, res, next) => {
   try {
-    const userId=req.params.userId
-    const user=await userSchema.findById(userId)
-    if(user){
-      return res.json({status:true,user})
-    }else{
-      return res.json({status:false})
-    }
-
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-module.exports.getUsers=async(req,res,next)=>{
-  try {
-    const user=await userSchema.find({})
-    if(user){
-      return res.json({status:true,user})
-    }else{
-      return res.json({status:false})
+    const userId = req.params.userId;
+    const user = await userSchema.findById(userId);
+    if (user) {
+      return res.json({ status: true, user });
+    } else {
+      return res.json({ status: false });
     }
   } catch (error) {
     console.log(error);
   }
-}
+};
+
+module.exports.getUsers = async (req, res, next) => {
+  try {
+    const user = await userSchema.find({});
+    if (user) {
+      return res.json({ status: true, user });
+    } else {
+      return res.json({ status: false });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
