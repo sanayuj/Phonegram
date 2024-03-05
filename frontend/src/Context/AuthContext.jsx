@@ -1,4 +1,4 @@
-import { createContext, useCallback, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { postRequest } from "../utils/services";
 import { baseUrl } from "../utils/services";
 export const AuthContext = createContext();
@@ -12,26 +12,39 @@ export const AuthContextProvider = ({ children }) => {
     email: "",
     password: "",
   });
-  console.log(registerInfo);
+  console.log(user);
+
+  useEffect(() => {
+    let userDetails = localStorage.getItem("User");
+    setUser(JSON.parse(userDetails));
+  }, []);
   const updateRegisterInfo = useCallback((info) => {
     setRegisterInfo(info);
   }, []);
 
-  const registerUser = useCallback(async (e) => {
-    e.preventDefault()
-    setIsRegisterLoading(true);
-    setRegisterError(null);
-    const response = await postRequest(
-      `${baseUrl}/register`,
-      JSON.stringify(registerInfo)
-    );
-    setIsRegisterLoading(false);
-    if (response.error) {
-      return setRegisterError(response);
-    }
-    localStorage.setItem("User", JSON.stringify(response));
-    setUser(response);
-  }, [registerInfo]);
+  const registerUser = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setIsRegisterLoading(true);
+      setRegisterError(null);
+      const response = await postRequest(
+        `${baseUrl}/register`,
+        JSON.stringify(registerInfo)
+      );
+      setIsRegisterLoading(false);
+      if (response.error) {
+        return setRegisterError(response);
+      }
+      localStorage.setItem("User", JSON.stringify(response));
+      setUser(response);
+    },
+    [registerInfo]
+  );
+
+  const logoutUser=useCallback(()=>{
+    localStorage.removeItem("User")
+    setUser(null)
+  },[])
   return (
     <AuthContext.Provider
       value={{
@@ -40,7 +53,8 @@ export const AuthContextProvider = ({ children }) => {
         updateRegisterInfo,
         registerUser,
         registerError,
-        isRegisterLoading
+        isRegisterLoading,
+        logoutUser
       }}
     >
       {children}
