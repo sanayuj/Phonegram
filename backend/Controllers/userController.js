@@ -53,7 +53,9 @@ module.exports.login = async (req, res, next) => {
       const matchPassword = await bcrypt.compare(password, userExist.password);
       if (matchPassword) {
         let token = createToken(userExist._id);
-        return res.json({ status: true, token, message: "Login success" });
+        let Id=userExist._id
+        let name=userExist.name
+        return res.json({ status: true, token,Id,email,name,message: "Login success" });
       } else {
         return res.json({ status: false, message: "Incorrect password" });
       }
