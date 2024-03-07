@@ -12,6 +12,7 @@ function App() {
 const {user}=useContext(AuthContext)
   return (
     <>
+
     <Navbar/>
     <Container className="text-secondary">
     <Routes>
