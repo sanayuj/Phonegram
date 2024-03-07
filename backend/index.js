@@ -4,6 +4,7 @@ const cors = require("cors");
 const dbConnection = require("./Config/dbConfig");
 const userRouter = require("./Routes/userRoutes");
 const chatRouter=require("./Routes/chatRoutes")
+const messageRouter=require("./Routes/messageRoute")
 
 //Dot ENV Config
 
@@ -25,6 +26,7 @@ app.use(cors());
 
 app.use("/", userRouter);
 app.use("/chats",chatRouter)
+app.use("/msg",messageRouter)
 
 //Server Config
 
