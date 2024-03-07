@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const dbConnection = require("./Config/dbConfig");
 const userRouter = require("./Routes/userRoutes");
+const chatRouter=require("./Routes/chatRoutes")
 
 //Dot ENV Config
 
@@ -23,6 +24,7 @@ app.use(cors());
 //Route Config
 
 app.use("/", userRouter);
+app.use("/chats",chatRouter)
 
 //Server Config
 

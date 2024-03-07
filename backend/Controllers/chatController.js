@@ -1,4 +1,4 @@
-import chatModel from "../Models/chatModel";
+const chatModel =require("../Models/chatModel")
 
 module.exports.createchat=async(req,res)=>{
     const {firstId,secondId}=req.body
@@ -29,7 +29,7 @@ module.exports.findUserChats=async(req,res)=>{
 module.exports.findChat=async(req,res)=>{
     try {
        const {firstId,secondId}=req.params
-       const chat=await chatModel.find({members:{$all:[firstId,secondId]}})
+       const chat=await chatModel.findOne({members:{$all:[firstId,secondId]}})
        res.json({chat,status:true})
     } catch (error) {
         console.log(error);
