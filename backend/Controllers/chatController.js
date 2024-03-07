@@ -8,7 +8,7 @@ module.exports.createchat=async(req,res)=>{
         if(chat){
             return res.json({chat,status:true})
         }
-       const newChat=new chatModel({member:[firstId,secondId]})
+       const newChat=new chatModel({members:[firstId,secondId]})
        const response=await newChat.save()
        res.json({response,status:true})
     } catch (error) {
