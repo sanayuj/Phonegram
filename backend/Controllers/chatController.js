@@ -16,11 +16,21 @@ module.exports.createchat=async(req,res)=>{
     }
 }
 
-module.exports.findChat=async(req,res)=>{
+module.exports.findUserChats=async(req,res)=>{
     try {
        const userId=req.params.userId
        const chats=await chatModel.find({members:{$in:[userId]}})
        res.json({chats,status:true})
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports.findChat=async(req,res)=>{
+    try {
+       const {firstId,secondId}=req.params
+       const chat=await chatModel.find({members:{$all:[firstId,secondId]}})
+       res.json({chat,status:true})
     } catch (error) {
         console.log(error);
     }
