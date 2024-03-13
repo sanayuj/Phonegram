@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { createContext, useContext, useState } from "react";
+import { useEffect, useState ,createContext, useContext} from "react";
 import { baseUrl, getRequest, postRequest } from "../utils/services";
 
-export const ChatContext = useContext();
+export const ChatContext = createContext()
 
 export const ChatContextProvider = ({ children, user }) => {
   const [userChats, setUserChats] = useState(null);
@@ -27,7 +26,7 @@ export const ChatContextProvider = ({ children, user }) => {
 
   return (
     <ChatContext.Provider
-      value={{ userChats, isUserChatLoading, userChatError }}
+       value={{ userChats, isUserChatLoading, userChatError }}
     >
       {children}
     </ChatContext.Provider>
