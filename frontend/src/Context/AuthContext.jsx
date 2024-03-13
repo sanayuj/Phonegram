@@ -16,7 +16,7 @@ export const AuthContextProvider = ({ children }) => {
     email: "",
     password: "",
   });
-  console.log(user);
+  console.log(user,"00000");
   console.log(loginInfo);
 
   useEffect(() => {
