@@ -24,21 +24,25 @@ export const ChatContextProvider = ({ children, user }) => {
         setIsUserChatLoading(true);
         setUserChatError(null);
         const response = await getRequest(`${baseUrl}/chats/${user?.Id}`);
+        console.log(response,"&&&*&*&*&*");
         setIsUserChatLoading(false);
         if (response.error) {
           return setUserChatError(response);
         }
-        const pChats=response.filter((U)=>{
+        const pChats=response?.chats.filter((U)=>{
           let isChatCreated=false
-          if(user.Id===U.Id)return false
+          console.log(user,"))))00000)))");
+          console.log(U,"^^^6");
+          if(user.Id===U._id)return false
           if(userChats){
-           isChatCreated = userChats.some((chat)=>{
-              return chat.members[0]===U.Id || chat.members[1]===U.Id
+           isChatCreated = userChats?.some((chat)=>{
+              return chat.members[0]===U._id || chat.members[1]===U._id
             })
           }
-          !isChatCreated
+         return !isChatCreated
         })
-       
+        console.log(pChats,"***");
+        setPotentialChats(pChats)
       }
     };
     getUserChat()
