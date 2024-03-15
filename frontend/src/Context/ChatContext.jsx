@@ -1,4 +1,4 @@
-import { useEffect, useState ,createContext, useContext} from "react";
+import { useEffect, useState ,createContext, useContext, useCallback} from "react";
 import { baseUrl, getRequest, postRequest } from "../utils/services";
 
 export const ChatContext = createContext()
@@ -8,7 +8,7 @@ export const ChatContextProvider = ({ children, user }) => {
   const [isUserChatLoading, setIsUserChatLoading] = useState(false);
   const [userChatError, setUserChatError] = useState(null);
   const [potentialChats,setPotentialChats]=useState([])
-
+useEffect(()=>{
   const getUsers=async()=>{
     const response=await getRequest(`${baseUrl}/`)
     if(response.error){
@@ -17,6 +17,10 @@ export const ChatContextProvider = ({ children, user }) => {
     setPotentialChats(response)
 
   }
+  getUsers()
+
+},[userChats])
+  
 
   useEffect(() => {
     const getUserChat = async () => {
@@ -28,26 +32,28 @@ export const ChatContextProvider = ({ children, user }) => {
         if (response.error) {
           return setUserChatError(response);
         }
-        setUserChats(response)
-
-        const pChats=response?.chats.filter((U)=>{
-          let isChatCreated=false
-          if(user?.Id===U?._id)return false
-          if(userChats){
-
-           isChatCreated = userChats?.some((chat)=>{
-              return chat?.members[0]===U?._id || chat?.members[1]===U?._id
-            })
+        setUserChats(response);
+  
+        const pChats = response?.chats.filter((U) => {
+          let isChatCreated = false;
+          if (user?.Id === U?._id) return false;
+          if (userChats) {
+            isChatCreated = userChats?.some((chat) => {
+              return chat?.members[0] === U?._id || chat?.members[1] === U?._id;
+            });
           }
-         
-         return !isChatCreated
-        })
-        setPotentialChats(pChats)
+          return !isChatCreated;
+        });
+        setPotentialChats(pChats);
       }
-    }; 
-    getUserChat()
-    getUsers()
-  }, []);
+    };
+  
+    getUserChat();
+
+  }, [user]);
+  const createChat=useCallback(async()=>{
+    const response= await postRequest(`${baseUrl}/chats/${user?.Id}`);
+  },[])
 
   return (
     <ChatContext.Provider
