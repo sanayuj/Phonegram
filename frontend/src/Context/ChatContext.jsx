@@ -51,8 +51,8 @@ useEffect(()=>{
     getUserChat();
 
   }, [user]);
-  const createChat=useCallback(async()=>{
-    const response= await postRequest(`${baseUrl}/chats/${user?.Id}`);
+  const createChat=useCallback(async(firstId,secondId)=>{
+    const response= await postRequest(`${baseUrl}/chats`,);
   },[])
 
   return (
