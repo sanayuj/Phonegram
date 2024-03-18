@@ -8,7 +8,7 @@ import PotentalChats from "../Components/Chat/PotentalChats";
 function Chat() {
   const { user } = useContext(AuthContext);
 
-  const { userChats, isUserChatsLoading, userChatError } =
+  const { userChats, isUserChatsLoading, userChatError,updateCurrentChat } =
     useContext(ChatContext);
   console.log("UserChats", userChats);
 
@@ -20,8 +20,8 @@ function Chat() {
           <Stack direction="horizontal" gap={4} className="align-items-start">
             <Stack className="message-box flex-grow-0 pe-3" gap={3}>
               {isUserChatsLoading && <p>Loading..</p>}
-              {userChats?.chats.map((chats, index) => (
-                <div key={index}>
+              {userChats?.map((chats, index) => (
+                <div key={index} onClick={()=>updateCurrentChat(chats)}>
                   <UserChat chat={chats} user={user} />
                 </div>
               ))}

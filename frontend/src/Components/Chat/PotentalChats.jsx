@@ -1,15 +1,17 @@
 import React, { useContext } from "react";
 import { ChatContext } from "../../Context/ChatContext";
+import {AuthContext} from "../../Context/AuthContext"
 function PotentalChats() {
-  const { potentialChats } = useContext(ChatContext);
+  const {user}=useContext(AuthContext)
+  const { potentialChats,createChat } = useContext(ChatContext);
   console.log("Potential", potentialChats);
   return (
     <div>
       <div className="all-users">
         {potentialChats &&
-          potentialChats?.user?.map((value, index) => {
+          potentialChats?.map((value, index) => {
             return(
-            <div className="single-user" key={index}>
+            <div className="single-user" key={index} onClick={()=>createChat(user?.Id,value?._id)}>
               {value.name}
               <span className="user-online"></span>
             </div>
