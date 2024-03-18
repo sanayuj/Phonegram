@@ -18,9 +18,11 @@ const getUser=async()=>{
     if(response.error){
        return setError(response)
     }
+    console.log(response,"&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*");
     setRecipientUser(response)
+    
 }
 getUser()
-},[])
+},[recipientId])
 return {recipientUser,error}
 }

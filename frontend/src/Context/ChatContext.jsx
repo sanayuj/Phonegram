@@ -9,9 +9,10 @@ export const ChatContextProvider = ({ children, user }) => {
   const [userChatError, setUserChatError] = useState(null);
   const [potentialChats,setPotentialChats]=useState([])
   const [currentChat,setCurrentChat]=useState(null)
+  const [message,setMessage]=useState(null)
   const [isMessageLoading,setMessageLoading]=useState(false)
   const [messageError,setMessageError]=useState(null)
-  console.log(userChats,"****");
+  console.log(message,"****");
 useEffect(()=>{
   const getUsers=async()=>{
     const response=await getRequest(`${baseUrl}/`)
@@ -57,22 +58,41 @@ useEffect(()=>{
 
 
 
+  useEffect(() => {
+    const getMessage = async () => {
+      if (user?.Id) {
+        setMessageLoading(true);
+        setMessageError(null);
+        const response = await getRequest(`${baseUrl}/msg/fetchMsg/${currentChat?._id}`);
+        setMessageLoading(false);
+        if (response.error) {
+          return setMessageError(response);
+        }
+        console.log(response,"=================================>");
+        setMessage(response);
+      }
+    };
+  
+    getMessage();
+
+  }, [currentChat]);
+
   const updateCurrentChat=useCallback((chat)=>{setCurrentChat(chat)},[])
 
   const createChat=useCallback(async(firstId,secondId)=>{
     const response= await postRequest(`${baseUrl}/chats`,JSON.stringify({
       firstId,secondId
-    }));
+    })); 
     if(response.error){
       return console.log("Error creating chat",response);
     }
     console.log(response,"&&&&&&*8888888&&&&&&&");
     setUserChats((prev)=>[...prev,response])
-  },[])
+  },[userChats])
 
   return (
     <ChatContext.Provider
-       value={{ userChats, isUserChatLoading, userChatError,potentialChats,createChat,updateCurrentChat }}
+       value={{ userChats, isUserChatLoading, userChatError,potentialChats,createChat,updateCurrentChat,message,isMessageLoading,messageError,currentChat}}
     >
       {children}
     </ChatContext.Provider>
