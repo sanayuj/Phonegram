@@ -8,13 +8,19 @@ io.on("connection", (socket) => {
 
 
     socket.on("addNewUser",(userId)=>{
-        !onlineUser.some((user)=>{user.userId===userId})&&
+        !onlineUser.some(user=>user.userId===userId)&&
 onlineUser.push({
     userId,
     socketId:socket.id
 })
 console.log(onlineUser,"Online User!!!");
 io.emit("getOnlineUsers",onlineUser)
+    })
+    socket.on("disconnect",()=>{
+        onlineUser=onlineUser.filter(user=>
+            user.socketId!==socket.id
+        )
+        io.emit("getOnlineUsers",onlineUser)
     })
 });
 

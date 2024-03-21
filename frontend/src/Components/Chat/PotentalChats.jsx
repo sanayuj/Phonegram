@@ -3,7 +3,7 @@ import { ChatContext } from "../../Context/ChatContext";
 import {AuthContext} from "../../Context/AuthContext"
 function PotentalChats() {
   const {user}=useContext(AuthContext)
-  const { potentialChats,createChat } = useContext(ChatContext);
+  const { potentialChats,createChat ,onlineUsers} = useContext(ChatContext);
   return (
     <div>
       <div className="all-users">
@@ -12,7 +12,8 @@ function PotentalChats() {
             return(
             <div className="single-user" key={index} onClick={()=>createChat(user?.Id,value?._id)}>
               {value.name}
-              <span className="user-online"></span>
+              <span className={onlineUsers.some((user) => user?.userId === value?._id) ? "user-online" : ""}></span>
+
             </div>
             )
           })}

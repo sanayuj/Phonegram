@@ -36,6 +36,9 @@ if(socket===null)return
     console.log(response,"REs");
 setOnlineUsers(response)
   })
+  return ()=>{
+    socket.off("getOnlineUsers")
+  }
 },[socket])
 
 useEffect(()=>{
@@ -132,12 +135,14 @@ setTextMessage("")
     if(response.error){
       return console.log("Error creating chat",response);
     }
-    setUserChats((prev)=>[...prev,response])
+    setUserChats((prev)=>{
+      console.log(prev,"@@@@@");
+      return[...prev,response]})
   },[userChats])
 
   return (
     <ChatContext.Provider
-       value={{ userChats, isUserChatLoading, userChatError,potentialChats,createChat,updateCurrentChat,message,isMessageLoading,messageError,currentChat,sendTextMessage}}
+       value={{ userChats, isUserChatLoading, userChatError,potentialChats,createChat,updateCurrentChat,message,isMessageLoading,messageError,currentChat,sendTextMessage,onlineUsers}}
     >
       {children}
     </ChatContext.Provider>

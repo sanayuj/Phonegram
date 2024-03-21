@@ -9,7 +9,7 @@ import ChatBox from "../Components/Chat/ChatBox";
 function Chat() {
   const { user } = useContext(AuthContext);
 
-  const { userChats, isUserChatsLoading, userChatError,updateCurrentChat } =
+  const { userChats, isUserChatsLoading, userChatError,updateCurrentChat,onlineUsers } =
     useContext(ChatContext);
 
   return (
