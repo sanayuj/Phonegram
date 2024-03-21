@@ -12,7 +12,10 @@ export const ChatContextProvider = ({ children, user }) => {
   const [message,setMessage]=useState(null)
   const [isMessageLoading,setMessageLoading]=useState(false)
   const [messageError,setMessageError]=useState(null)
-  console.log(message,"****");
+  const [sendTextMessageError,setSendTextMessageError]=useState(null)
+  const [newMessage,setNewMessage]=useState(null)
+
+
 useEffect(()=>{
   const getUsers=async()=>{
     const response=await getRequest(`${baseUrl}/`)
@@ -68,7 +71,6 @@ useEffect(()=>{
         if (response.error) {
           return setMessageError(response);
         }
-        console.log(response,"=================================>");
         setMessage(response);
       }
     };
@@ -76,6 +78,27 @@ useEffect(()=>{
     getMessage();
 
   }, [currentChat]);
+
+  const sendTextMessage=useCallback(async(textMessage,sender,currentChatId,setTextMessage)=>{
+if(!textMessage){
+  return console.log("you must type something")
+}
+const response =await postRequest(`${baseUrl}/msg/`,JSON.stringify({
+  chatId:currentChatId,
+  senderId:sender?._Id,
+  text:textMessage 
+}))
+
+if (response?.error) {
+  return setSendTextMessageError(response);
+}
+setNewMessage(response)
+
+setMessage((prev)=>{
+  return[[...prev],response]})
+setTextMessage("")
+
+  },[])
 
   const updateCurrentChat=useCallback((chat)=>{setCurrentChat(chat)},[])
 
@@ -86,13 +109,12 @@ useEffect(()=>{
     if(response.error){
       return console.log("Error creating chat",response);
     }
-    console.log(response,"&&&&&&*8888888&&&&&&&");
     setUserChats((prev)=>[...prev,response])
   },[userChats])
 
   return (
     <ChatContext.Provider
-       value={{ userChats, isUserChatLoading, userChatError,potentialChats,createChat,updateCurrentChat,message,isMessageLoading,messageError,currentChat}}
+       value={{ userChats, isUserChatLoading, userChatError,potentialChats,createChat,updateCurrentChat,message,isMessageLoading,messageError,currentChat,sendTextMessage}}
     >
       {children}
     </ChatContext.Provider>
