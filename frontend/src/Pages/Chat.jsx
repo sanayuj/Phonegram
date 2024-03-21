@@ -11,7 +11,6 @@ function Chat() {
 
   const { userChats, isUserChatsLoading, userChatError,updateCurrentChat } =
     useContext(ChatContext);
-  console.log("UserChats", userChats);
 
   return (
     <div>

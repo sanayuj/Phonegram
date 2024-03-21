@@ -5,7 +5,7 @@ import profile from "../../assets/profile.svg"
 
 function UserChat({ chat, user }) {
   const { recipientUser } = useFetchRecipient(chat, user);
-  console.log(recipientUser, "888");
+
   
   return (
     <Stack

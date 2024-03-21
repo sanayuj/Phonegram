@@ -11,7 +11,7 @@ function ChatBox() {
   const { currentChat, message, isMessageLoading ,sendTextMessage} = useContext(ChatContext);
   const { recipientUser } = useFetchRecipient(currentChat, user);
   const [textmessage, setTextmessage] = useState("");
-  console.log(message, "^^^^^");
+
 
   if (!recipientUser) {
     return (

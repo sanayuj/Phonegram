@@ -16,7 +16,10 @@ export const ChatContextProvider = ({ children, user }) => {
   const [sendTextMessageError,setSendTextMessageError]=useState(null)
   const [newMessage,setNewMessage]=useState(null)
   const [socket,setSocket]=useState(null)
+  const [onlineUsers,setOnlineUsers]=useState([])
 
+
+  console.log(onlineUsers,"***^^^^^^^^^*** Online Users");
 
   useEffect(()=>{
 const newSocket=io("http://localhost:3000")
@@ -26,6 +29,14 @@ return ()=>{
 }
   },[user])
 
+useEffect(()=>{
+if(socket===null)return
+  socket.emit("addNewUser",user?.Id)
+  socket.on("getOnlineUsers",(response)=>{
+    console.log(response,"REs");
+setOnlineUsers(response)
+  })
+},[socket])
 
 useEffect(()=>{
   const getUsers=async()=>{
@@ -106,7 +117,6 @@ if (response?.error) {
 setNewMessage(response)
 
 setMessage((prev)=>{
-  console.log(prev?.message,"================>>>>>");
   let prevValue=prev?.message
   return[...prevValue,response]})
 setTextMessage("")

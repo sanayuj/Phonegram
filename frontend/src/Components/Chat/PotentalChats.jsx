@@ -4,7 +4,6 @@ import {AuthContext} from "../../Context/AuthContext"
 function PotentalChats() {
   const {user}=useContext(AuthContext)
   const { potentialChats,createChat } = useContext(ChatContext);
-  console.log("Potential", potentialChats);
   return (
     <div>
       <div className="all-users">

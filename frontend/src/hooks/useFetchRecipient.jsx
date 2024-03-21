@@ -5,7 +5,7 @@ import { baseUrl, getRequest } from "../utils/services";
 export const useFetchRecipient=(chat,user)=>{
  const [recipientUser,setRecipientUser]=useState(null)
  const [error,setError]=useState(null)
- console.log(recipientUser,"---------------------------------->");
+
 
  const recipientId = chat?.members?.find((id) => id
 !==user?.Id)
@@ -18,7 +18,6 @@ const getUser=async()=>{
     if(response.error){
        return setError(response)
     }
-    console.log(response,"&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*");
     setRecipientUser(response)
     
 }
