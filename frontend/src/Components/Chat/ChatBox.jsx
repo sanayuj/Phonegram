@@ -11,7 +11,7 @@ function ChatBox() {
   const { currentChat, message, isMessageLoading ,sendTextMessage} = useContext(ChatContext);
   const { recipientUser } = useFetchRecipient(currentChat, user);
   const [textmessage, setTextmessage] = useState("");
-  console.log(textmessage, "^^^^^");
+  console.log(message, "^^^^^");
 
   if (!recipientUser) {
     return (
@@ -39,9 +39,9 @@ function ChatBox() {
                   : "message align-self-start flex-grow-0"
               }`}
             >
-              <span className="">{message.text}</span>
+              <span className="">{message?.text}</span>
               <span className="message-footer">
-                {moment(message.createdAt).calendar()}
+                {moment(message?.createdAt).calendar()}
               </span>
             </Stack>
           ))}

@@ -1,5 +1,6 @@
 import { useEffect, useState ,createContext, useContext, useCallback} from "react";
 import { baseUrl, getRequest, postRequest } from "../utils/services";
+import {io} from "socket.io-client"
 
 export const ChatContext = createContext()
 
@@ -14,6 +15,16 @@ export const ChatContextProvider = ({ children, user }) => {
   const [messageError,setMessageError]=useState(null)
   const [sendTextMessageError,setSendTextMessageError]=useState(null)
   const [newMessage,setNewMessage]=useState(null)
+  const [socket,setSocket]=useState(null)
+
+
+  useEffect(()=>{
+const newSocket=io("http://localhost:3000")
+setSocket(newSocket)
+return ()=>{
+  newSocket.disconnect()
+}
+  },[user])
 
 
 useEffect(()=>{
@@ -95,7 +106,9 @@ if (response?.error) {
 setNewMessage(response)
 
 setMessage((prev)=>{
-  return[[...prev],response]})
+  console.log(prev?.message,"================>>>>>");
+  let prevValue=prev?.message
+  return[...prevValue,response]})
 setTextMessage("")
 
   },[])
